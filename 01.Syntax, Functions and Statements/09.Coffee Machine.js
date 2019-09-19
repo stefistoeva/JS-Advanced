@@ -29,18 +29,18 @@ function solve(array) {
             price += 0.1;
         }
 
-        function printResult(coins, price, typeOfDrink) {
-            if(coins >= price) {
-                total += price;
-                console.log(`You ordered ${typeOfDrink}. Price: $${price.toFixed(2)} Change: $${(coins - price).toFixed(2)}`);
-            } else {
-                console.log(`Not enough money for ${typeOfDrink}. Need $${(price - coins).toFixed(2)} more.`);
-            }
-        }
-
         printResult(coins, price, typeOfDrink);
     }
+
+    function printResult(coins, price, typeOfDrink) {
+        if(coins >= price) {
+            total += price;
+            console.log(`You ordered ${typeOfDrink}. Price: $${price.toFixed(2)} Change: $${(coins - price).toFixed(2)}`);
+        } else {
+            console.log(`Not enough money for ${typeOfDrink}. Need $${(price - coins).toFixed(2)} more.`);
+        }
+    }
+   
     console.log(`Income Report: $${total.toFixed(2)}`);
 }
-
 solve(['1.00, coffee, caffeine, milk, 4', '0.40, tea, milk, 2', '1.00, coffee, decaf, 0']);
