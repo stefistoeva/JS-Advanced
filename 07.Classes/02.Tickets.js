@@ -4,23 +4,29 @@ class Ticket {
         this.price = Number(price);
         this.status = status;
     }
+
+    static sortTickets(tickets, prop) {
+        return [...tickets]
+            .sort((a, b) => {
+                if(typeof a[prop] === 'string') {
+                    return a[prop].localeCompare(b[prop]);
+                } else {
+                    return a[prop] - b[prop];
+                }
+            })
+    }
 }
 
 function solve(input, prop) {
-    return input
+    const tickets =  input
         .reduce((prev, line) => {
             let [destination, price, status] = line.split('|');
             let ticket = new Ticket(destination, price, status);
             prev.push(ticket);
             return prev;
-        }, [])
-        .sort((a, b) => {
-            if(typeof a[prop] === 'string') {
-                return a[prop].localeCompare(b[prop]);
-            } else {
-                return a[prop] - b[prop];
-            }
-        })
+        }, []);
+
+    return Ticket.sortTickets(tickets, prop);
 }
 
 console.log(solve(['Philadelphia|94.20|available',
