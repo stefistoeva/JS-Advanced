@@ -1,4 +1,4 @@
-const isOddOrEven = require("../evenOrOdd.js")
+const isOddOrEven = require("../02.evenOrOdd.js")
 
 let expect = require('chai').expect;
 let assert = require("chai").assert;
