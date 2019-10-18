@@ -14,11 +14,11 @@ describe('Warehouse', function() {
             warehouse = new Warehouse(0);
         }, 'Invalid given warehouse space');
     });
-    // it('constructor gets a non-numerical value', function() {
-    //     assert.throw(function() {
-    //         warehouse = new Warehouse('1');
-    //     }, 'Invalid given warehouse space');
-    // });
+    it('constructor gets a non-numerical value', function() {
+         assert.throw(function() {
+             warehouse = new Warehouse('1');
+         }, 'Invalid given warehouse space');
+    });
     it('addProduct(type, product, quantity) function - add new product', function() {
         warehouse = new Warehouse(1);
         warehouse.addProduct('Food', 'ice cream', 1);
