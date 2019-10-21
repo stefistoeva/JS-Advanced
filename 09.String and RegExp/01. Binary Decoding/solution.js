@@ -14,7 +14,7 @@ function solve() {
 		let result = "";
 		matched.forEach(element => {
 			let asciiSymbol = String.fromCharCode(binaryToDecimal(element));
-			const regExp = /[A-z]+/gm;
+			const regExp = /[A-Za-z ]+/gm;
 			if(regExp.exec(asciiSymbol)) {
 				result += asciiSymbol;
 			}
