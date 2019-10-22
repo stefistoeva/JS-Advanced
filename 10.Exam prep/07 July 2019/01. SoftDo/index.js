@@ -1,9 +1,3 @@
-// NOTE: The comment sections inside the index.html file is an example of how suppose to be structured the current elements.
-//       - You can use them as an example when you create those elements, to check how they will be displayed, just uncomment them.
-//       - Also keep in mind that, the actual skeleton in judge does not have this comment sections. So do not be dependent on them!
-//       - Тhey are present in the skeleton just to help you!
-
-
 function mySolution(){
     const textarea = document.getElementsByTagName('textarea')[0];
     const nameOptional = document.querySelector("#inputSection > div > input[type=username]");
@@ -132,3 +126,5 @@ function mySolution(){
         return input;
     }
 }
+
+//33/100 !!!
