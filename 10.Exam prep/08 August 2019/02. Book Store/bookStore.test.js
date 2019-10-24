@@ -32,11 +32,7 @@ describe('BookStore', function() {
             assert.deepEqual(store.books[0], expectedBook);
         });
         it('should return obj', function () {
-            store.stockBooks(['Book1-Author1', 'Book2-Author2']);
-    
-            store.hire('Stefi', 'Cashier');    
-            store.sellBook('Book1', 'Stefi');  
-            assert.equal(store.stockBooks(['Book2-Author2']), '[object Object],[object Object]');
+            assert.deepEqual(store.stockBooks(['Book1-Author1']), [{title: 'Book1', author: 'Author1'}]);
         });
     });
 
