@@ -1,111 +1,80 @@
 function mySolution(){
     const textarea = document.getElementsByTagName('textarea')[0];
-    const nameOptional = document.querySelector("#inputSection > div > input[type=username]");
+    const nameOptional = document.getElementsByTagName('input')[0];
+    const pendingArea = document.getElementById('pendingQuestions');
+    const openArea = document.getElementById('openQuestions');
     const sendBtn = document.getElementsByTagName('button')[0];
-    sendBtn.addEventListener('click', addQuestion);
-    
-    function addQuestion() {
-        const newQ = createDivElement('pendingQuestion');
 
-        setImage(newQ);
-        setSpanElement(newQ, nameOptional);
-        setParagraph(newQ, textarea);
+    sendBtn.addEventListener('click', function(e) {
+        const text = textarea.value;
+        const name = nameOptional.value ? nameOptional.value : 'Anonymous';
 
-        const div = createDivElement('actions');
-        const archive = setBtn(div, 'archive');
-        archive.addEventListener('click', removeQuestion)
-        
-        function removeQuestion() {
-            document.getElementById('pendingQuestions').removeChild(newQ);
-        }
+        const pendingContent = createDivElement('pendingQuestion');
+        setImage(pendingContent);
+        setSpanElement(pendingContent, name);
+        setParagraph(pendingContent, text);
+        const actionDiv = createDivElement('actions');
+        setBtn(actionDiv, 'archive');
+        setBtn(actionDiv, 'open', '', name, text);
 
-        const open = setBtn(div, 'open');
-        open.addEventListener('click', moveToOpenQ);
+        pendingContent.appendChild(actionDiv);
+        pendingArea.appendChild(pendingContent);
+        textarea.value = '';
+        nameOptional.value = '';
+    });
 
-        function moveToOpenQ() {
-            const openQ = createDivElement('openQuestion');
-            setImage(openQ);
-            setSpanElement(openQ, nameOptional);
-            setParagraph(openQ, textarea);
-
-            const divAction = createDivElement('actions');
-            const reply = setBtn(divAction, 'reply');
-            reply.addEventListener('click', replyFunction);
-
-            function replyFunction() {
-                const divElement = createDivElement('replySection');
-                let valueInput = setInput(divElement, 'replyInput', 'text', 'Reply to this question here...');
-                const replyBtn = setBtn(divElement, 'replyButton', 'Send');
-                replyBtn.addEventListener('click', replyMessage);
-
-                function replyMessage() {
-                    // if(valueInput.value) {
-                    //     let liElement = setLi();
-                    //     let olElement = olElement().appendChild(li)
-                    // }
-                    
-                }
-
-                // function setLi() {
-                //     let li = document.createElement('li');
-                //     li.textContent = valueInput.value;
-                //     return li;
-                // }
-
-                // function olElement() {
-                //     let olElement = document.createElement('ol');
-                //     olElement.classList.add('reply');
-                //     olElement.setAttribute('type', 1);
-                // }
-
-                divElement.appendChild(replyBtn);
-
-                document.getElementById('openQuestions').appendChild(divElement);
-            }
-
-            openQ.appendChild(divAction);
-
-            document.getElementById('openQuestions').appendChild(openQ);
-            // removeQuestion();
-        }
-
-        newQ.appendChild(div);
-
-        document.getElementById('pendingQuestions').appendChild(newQ);
-        // textarea.value = '';
-        // nameOptional.value = '';
-    }
-
-    
     function createDivElement(className) {
-        let div = document.createElement('div');
+        const div = document.createElement('div');
         div.classList.add(className);
         return div;
     }
 
     function setImage(currDiv) {
-        let img = document.createElement('img');
-        img.setAttribute('src', './user.png');
+        const img = document.createElement('img');
+        img.setAttribute('src', './images/user.png');
         img.setAttribute('width', 32);
         img.setAttribute('height', 32);
         currDiv.appendChild(img);
     }
 
-    function setSpanElement(currDiv, username) {
-        let span = document.createElement('span');
-        username.value !== '' ? span.textContent = username.value : span.textContent = 'Anonymous';
+    function setSpanElement(currDiv, name) {
+        const span = document.createElement('span');
+        span.textContent = name;
         currDiv.appendChild(span);
     }
 
-    function setParagraph(currDiv, textarea) {
-        let p = document.createElement('p');
-        p.textContent = textarea.value;
+    function setParagraph(currDiv, text) {
+        const p = document.createElement('p');
+        p.textContent = text;
         currDiv.appendChild(p);
     }
-    
-    //refactor function attribute
-    function setBtn(div, className, content = '') {
-        let btn = document.createElement('button');
+
+    function setInput(divEl, className, type, message) {
+        const input = document.createElement('input');
+        input.classList.add(className);
+        input.setAttribute('type', type);
+        input.setAttribute('placeholder', message);
+        divEl.appendChild(input);
+        return input;
+    }
+
+    function setOl(divEl, className) {
+        const ol = document.createElement('ol');
+        ol.classList.add(className);
+        ol.type = 1;
+        divEl.appendChild(ol);
+        return ol;
+    }
+
+    function setLi(el, content) {
+        const li = document.createElement('li');
+        li.textContent = content;
+        el.appendChild(li);
+        return li;
+    }
+
+    function setBtn(div, className, content = '', name = '', text = '') {
+        const btn = document.createElement('button');
         btn.classList.add(className);
         if(content === '') {
             btn.textContent = className.split();
@@ -113,18 +82,51 @@ function mySolution(){
         } else {
             btn.textContent = content;
         }
+
+        if(className === 'archive') {
+            btn.addEventListener('click', (e) => {
+                e.target.parentNode.parentNode.parentNode.removeChild(e.target.parentNode.parentNode);
+            });
+        } else if (className === 'open') {
+            btn.addEventListener('click', (e) => {
+                const openContent = createDivElement('openQuestion');
+                setImage(openContent);
+                setSpanElement(openContent, name);
+                setParagraph(openContent, text);
+                const actionDiv = createDivElement('actions');
+                setBtn(actionDiv, 'reply');
+               
+                openContent.appendChild(actionDiv);
+                openArea.appendChild(openContent);
+                e.target.parentNode.parentNode.parentNode.removeChild(e.target.parentNode.parentNode);
+            });
+        } else if(className === 'reply') {
+            btn.addEventListener('click', (e) => {
+                const replyDiv = createDivElement('replySection');
+                
+                changeBtn = document.getElementsByClassName('reply')[0].textContent;
+                if(changeBtn === 'Back') {
+                    document.getElementsByClassName('reply')[0].textContent = 'Reply';
+                    document.getElementsByClassName('replySection')[0].style.display = 'none';
+                } else if (changeBtn === 'Reply') {
+                    document.getElementsByClassName('reply')[0].textContent = 'Back';
+                    setInput(replyDiv, 'replyInput', 'text', 'Reply to this question here...');
+                    setBtn(replyDiv, 'replyButton', 'Send');
+                    setOl(replyDiv, 'reply');
+                    replyDiv.style.display = 'block';
+                }
+                div.appendChild(replyDiv);
+            });
+        } else if(className === 'replyButton') {
+            btn.addEventListener('click', () => {
+                const inputField = document.querySelector("#openQuestions > div > div > div > input");
+                const ol = document.querySelector("#openQuestions > div > div > div > ol");
+                setLi(ol, inputField.value);
+                document.querySelector("#openQuestions > div > div > div:nth-child(2) > input").value = '';
+            });
+        }
+        
         div.appendChild(btn);
         return btn;
     }
-
-    function setInput(divEl, className, type, message) {
-        let input = document.createElement('input');
-        input.classList.add(className);
-        input.setAttribute('type', type);
-        input.setAttribute('placeholder', message);
-        divEl.appendChild(input);
-        return input;
-    }
 }
-
-//33/100 !!!
