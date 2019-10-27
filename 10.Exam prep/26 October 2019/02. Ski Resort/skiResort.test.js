@@ -1,4 +1,4 @@
-const SkiResort = require('../skiResort');
+const SkiResort = require('./skiResort');
 let assert = require('chai').assert;
 const { beforeEach } = require('mocha');
 
